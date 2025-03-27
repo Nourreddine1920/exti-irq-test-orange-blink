@@ -48,7 +48,6 @@ This project implements an **NEC IR remote decoder** using an **STM32 microcontr
 This function initializes **GPIO, EXTI (External Interrupts), and Timer**.
 
 ```c
->>>>>>> dfc850a (feat(nec-ir): update the README file)
 void NEC_Decoder_Init(void)
 {
   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
