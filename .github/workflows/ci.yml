@@ -18,7 +18,21 @@ jobs:
         fi
     - name: Build Project
       run: make clean && make all
+    - name: Check for Source Files
+      run: |
+        if [ -d "Src" ]; then
+          echo "Source directory found."
+        else
+          echo "Source directory not found! Exiting..."
+          exit 1
+        fi
+        if [ -d "Inc" ]; then
+          echo "Include directory found."
+        else
+          echo "Include directory not found! Exiting..."
+          exit 1
+        fi
     - name: Static Analysis
-      run: cppcheck --enable=all --inconclusive src/
+      run: cppcheck --enable=all --inconclusive Src/ Inc/
     - name: Code Formatting
-      run: clang-format -i src/*.c src/*.h
+      run: clang-format -i Src/*.c Inc/*.h
