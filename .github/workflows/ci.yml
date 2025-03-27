@@ -1,0 +1,18 @@
+name: CI Build & Analysis
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: sudo apt-get install -y gcc-arm-none-eabi cppcheck clang-format
+    - name: Static Analysis
+      run: cppcheck --enable=all --inconclusive src/
+    - name: Code Formatting
+      run: clang-format -i src/*.c src/*.h
+    - name: Build Project
+      run: make clean && make all
