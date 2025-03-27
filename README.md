@@ -1,67 +1,54 @@
-📱 STM32 NEC IR Remote Decoder
+# 📱 STM32 NEC IR Remote Decoder
 
-This project implements an NEC IR remote decoder using an STM32 microcontroller. It captures and processes IR signals from an NEC protocol remote, enabling control of various peripherals like LEDs, motors, or displays.
+This project implements an **NEC IR remote decoder** using an **STM32 microcontroller**. It captures and processes IR signals from an **NEC protocol remote**, enabling control of various peripherals like LEDs, motors, or displays.
 
-📚 Overview
+---
 
-📌 Key Features:✅ STM32 LL (Low Layer) API-based implementation✅ Decodes NEC IR protocol (Start pulse, Address, Command, Repeat)✅ External Interrupt Handling for IR Signal Capture✅ Uses Timer for accurate signal timing✅ Can control GPIO pins based on remote commands
+## 📚 Overview
 
-📌 Why This Project?This project is ideal for learning embedded systems, interrupts, timers, and NEC IR communication protocols.
+📌 **Key Features:** ✅ **STM32 LL (Low Layer) API-based implementation** ✅ **Decodes NEC IR protocol** (Start pulse, Address, Command, Repeat) ✅ **External Interrupt Handling for IR Signal Capture** ✅ **Uses Timer for accurate signal timing** ✅ **Can control GPIO pins based on remote commands**
 
-🚀 Getting Started
+📌 **Why This Project?** This project is ideal for **learning embedded systems**, **interrupts**, **timers**, and **NEC IR communication protocols**.
 
-🛠️ Hardware Requirements
+---
 
-🔹 STM32 Development Board (STM32F103, STM32F4xx, or similar)
+## 🚀 Getting Started
 
-🔹 IR Receiver Module (TSOP1738, VS1838B, or equivalent)
+### 🛠️ **Hardware Requirements**
 
-🔹 NEC-Compatible IR Remote
+- 🔹 **STM32 Development Board** (STM32F103, STM32F4xx, or similar)
+- 🔹 **IR Receiver Module** (TSOP1738, VS1838B, or equivalent)
+- 🔹 **NEC-Compatible IR Remote**
+- 🔹 **LEDs, Resistors, and Jumper Wires**
 
-🔹 LEDs, Resistors, and Jumper Wires
+### 💻 **Software Requirements**
 
-💻 Software Requirements
+- 🔹 **STM32CubeIDE** (or Keil uVision, IAR Embedded Workbench)
+- 🔹 **STM32CubeMX** (Optional for configuring peripherals)
+- 🔹 **ST-Link V2** (For debugging & programming)
 
-🔹 STM32CubeIDE (or Keil uVision, IAR Embedded Workbench)
+---
 
-🔹 STM32CubeMX (Optional for configuring peripherals)
+## 🔧 Circuit Diagram
 
-🔹 ST-Link V2 (For debugging & programming)
+📌 **Connections (STM32 & IR Receiver - TSOP1738)**
 
-🔧 Circuit Diagram
+| IR Receiver Pin | STM32 Pin             | Description     |
+| --------------- | --------------------- | --------------- |
+| **VCC**         | **3.3V / 5V**         | Power Supply    |
+| **GND**         | **GND**               | Ground          |
+| **OUT**         | **PA1 (EXTI Line 1)** | IR Signal Input |
 
-📌 Connections (STM32 & IR Receiver - TSOP1738)
+---
 
-IR Receiver Pin
+## 📝 **Code Breakdown**
 
-STM32 Pin
+### 🏰 **1. Initialization (NEC\_Decoder\_Init)**
 
-Description
+This function initializes **GPIO, EXTI (External Interrupts), and Timer**.
 
-VCC
-
-3.3V / 5V
-
-Power Supply
-
-GND
-
-GND
-
-Ground
-
-OUT
-
-PA1 (EXTI Line 1)
-
-IR Signal Input
-
-📝 Code Breakdown
-
-🏰 1. Initialization (NEC_Decoder_Init())
-
-This function initializes GPIO, EXTI (External Interrupts), and Timer.
-
+```c
+>>>>>>> dfc850a (feat(nec-ir): update the README file)
 void NEC_Decoder_Init(void)
 {
   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
@@ -72,11 +59,13 @@ void NEC_Decoder_Init(void)
   GPIO_Init();
   NEC_Timer_Init();
 }
+```
 
-🏰 2. GPIO & EXTI Configuration (GPIO_Init())
+### 🏰 **2. GPIO & EXTI Configuration (GPIO\_Init)**
 
-Configures the GPIO pin for the IR receiver and sets up an external interrupt (EXTI).
+Configures the **GPIO pin for the IR receiver** and sets up an **external interrupt (EXTI)**.
 
+```c
 static void GPIO_Init(void)
 {
   LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -99,81 +88,71 @@ static void GPIO_Init(void)
   NVIC_SetPriority(EXTI9_5_IRQn, 5);
   NVIC_EnableIRQ(EXTI9_5_IRQn);
 }
+```
 
-📈 NEC Protocol Overview
+---
 
-Signal Type
+## 📈 **NEC Protocol Overview**
 
-Timing (µs)
+| Signal Type       | Timing (µs)              | Description         |
+| ----------------- | ------------------------ | ------------------- |
+| **Start Pulse**   | 9000µs HIGH + 4500µs LOW | Initial signal      |
+| **Bit "1"**       | 562µs HIGH + 1687µs LOW  | Represents binary 1 |
+| **Bit "0"**       | 562µs HIGH + 562µs LOW   | Represents binary 0 |
+| **Repeat Signal** | 9000µs HIGH + 2250µs LOW | Repeat command      |
 
-Description
+---
 
-Start Pulse
+## 🚦 **Example Output (UART Debugging)**
 
-9000µs HIGH + 4500µs LOW
+When an IR remote button is pressed, the **decoded output** (Address & Command) is displayed via **UART**:
 
-Initial signal
-
-Bit "1"
-
-562µs HIGH + 1687µs LOW
-
-Represents binary 1
-
-Bit "0"
-
-562µs HIGH + 562µs LOW
-
-Represents binary 0
-
-Repeat Signal
-
-9000µs HIGH + 2250µs LOW
-
-Repeat command
-
-🚦 Example Output (UART Debugging)
-
-When an IR remote button is pressed, the decoded output (Address & Command) is displayed via UART:
-
+```
 NEC Signal Received:
 Address: 0x00FF
 Command: 0x20DF
+```
 
-🔧 How to Run the Project
+---
 
-1️⃣ Clone the Repository
+## 🔧 **How to Run the Project**
 
+### 1️⃣ **Clone the Repository**
+
+```sh
 git clone https://github.com/yourusername/STM32-NEC-IR-Decoder.git
 cd STM32-NEC-IR-Decoder
+```
 
-2️⃣ Open in STM32CubeIDE
+### 2️⃣ **Open in STM32CubeIDE**
 
-Import the project into STM32CubeIDE.
+- Import the project into **STM32CubeIDE**.
+- Compile the project (`Build → Clean & Build`).
+- Flash it to the STM32 board using **ST-Link**.
 
-Compile the project (Build → Clean & Build).
+### 3️⃣ **Test the IR Receiver**
 
-Flash it to the STM32 board using ST-Link.
+- Open a serial terminal (e.g., **PuTTY**, **Tera Term**).
+- Set baud rate: **115200**.
+- Press buttons on the **NEC Remote** and check the decoded signals.
 
-3️⃣ Test the IR Receiver
+---
 
-Open a serial terminal (e.g., PuTTY, Tera Term).
+## 🛠️ **Future Improvements**
 
-Set baud rate: 115200.
+🔹 Add **support for more IR remote control protocols** (Sony, RC5, etc.) 🔹 Integrate **FreeRTOS** for multitasking 🔹 Use **DMA (Direct Memory Access)** for optimized efficiency
 
-Press buttons on the NEC Remote and check the decoded signals.
+---
 
-🛠️ Future Improvements
+## 📚 **License**
 
-🔹 Add support for more IR remote control protocols (Sony, RC5, etc.)🔹 Integrate FreeRTOS for multitasking🔹 Use DMA (Direct Memory Access) for optimized efficiency
+This project is licensed under the **MIT License**.
 
-📚 License
+---
 
-This project is licensed under the MIT License.
+## 💬 **Contributions & Support**
 
-💬 Contributions & Support
+💡 Found a bug? Have suggestions? Feel free to **open an issue** or submit a **pull request**.
 
-💡 Found a bug? Have suggestions? Feel free to open an issue or submit a pull request.
-
-🚀 Follow & Star this repo if you find it useful!
+🚀 **Follow & Star this repo** if you find it useful!
 
