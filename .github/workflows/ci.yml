@@ -52,3 +52,23 @@ jobs:
     #     lcov --capture --directory . --output-file coverage.info
     #     lcov --remove coverage.info '/usr/*' --output-file coverage.info
     #     lcov --list coverage.info
+
+    - name: 📄 Generate Doxygen Docs
+      run: |
+        doxygen Doxyfile
+
+    - name: 📦 Upload Documentation
+      uses: actions/upload-artifact@v4
+      with:
+        name: doxygen-docs
+        path: docs/html
+
+    - name: 🧪 Run Unit Tests and Export Markdown
+      run: |
+        make test
+
+    - name: 📄 Upload Unit Test Markdown Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: unit-test-report
+        path: test_results/unit_test_report.md

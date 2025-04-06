@@ -194,4 +194,31 @@ erase:
 #######################################
 -include $(wildcard $(BUILD_DIR)/*.d)
 
+#######################################
+# Unit Tests with Unity
+#######################################
+
+# Path to Unity test files (update as needed)
+UNITY_DIR = test/unity
+TEST_DIR = test
+TEST_SRC = $(TEST_DIR)/test_nec_decoder.c
+TEST_OUT = $(TEST_DIR)/test_nec_decoder
+
+# Test includes
+TEST_INCLUDES = -I$(UNITY_DIR)/src -IInc -IDrivers/CMSIS/Include -IDrivers/CMSIS/Device/ST/STM32F4xx/Include
+
+test: $(TEST_OUT)
+	@mkdir -p test_results
+	@echo "## 🧪 NEC Decoder Unit Test Results" > test_results/unit_test_report.md
+	@echo "\`\`\`" >> test_results/unit_test_report.md
+	@./$(TEST_OUT) | tee -a test_results/unit_test_report.md
+	@echo "\`\`\`" >> test_results/unit_test_report.md
+
+$(TEST_OUT): $(TEST_SRC) $(UNITY_DIR)/src/unity.c
+	$(CC) -o $@ $^ $(CFLAGS) $(TEST_INCLUDES)
+
+clean-test:
+	-rm -f $(TEST_OUT)
+	-rm -rf test_results
+
 # *** EOF ***
