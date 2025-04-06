@@ -214,7 +214,7 @@ test: $(TEST_OUT)
 	@./$(TEST_OUT) | tee -a test_results/unit_test_report.md
 	@echo "\`\`\`" >> test_results/unit_test_report.md
 
-$(TEST_OUT): $(TEST_SRC) $(UNITY_DIR)/src/unity.c
+$(TEST_OUT): $(TEST_SRC) $(UNITY_DIR)/unity.c
 	$(CC) -o $@ $^ $(CFLAGS) $(TEST_INCLUDES)
 
 clean-test:
