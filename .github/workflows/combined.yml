@@ -1,0 +1,44 @@
+name: Combined Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  combined:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Build Workflow
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const octokit = require('@actions/github').getOctokit(process.env.GITHUB_TOKEN);
+            await octokit.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'ci.yml',
+              ref: context.ref,
+            });
+
+      - name: Trigger Test Workflow
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const octokit = require('@actions/github').getOctokit(process.env.GITHUB_TOKEN);
+            await octokit.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'sonar_cube_ci.yml',
+              ref: context.ref,
+            });
+
+      - name: Trigger Analysis Workflow
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const octokit = require('@actions/github').getOctokit(process.env.GITHUB_TOKEN);
+            await octokit.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'test.yml',
+              ref: context.ref,
+            });
