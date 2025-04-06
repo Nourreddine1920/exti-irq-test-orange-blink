@@ -13,7 +13,7 @@ jobs:
     - name: Install ARM Toolchain and STM32 Utilities
       run: |
         sudo apt-get update
-        sudo apt-get install -y gcc-arm-none-eabi make openocd stlink-tools cppcheck clang-format lcov
+        sudo apt-get install -y gcc-arm-none-eabi make openocd stlink-tools cppcheck clang-format doxygen
 
     - name: Check for Makefile
       run: |
