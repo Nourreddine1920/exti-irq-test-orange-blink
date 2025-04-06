@@ -56,7 +56,11 @@ void HardFault_Handler(void)
 }
 
 /**
-  * @brief This function handles Memory management fault.
+  * @brief  Handles Memory Management Fault exception.
+  * @note   This function is called when a memory management fault occurs.
+  *         Memory management faults are triggered by memory protection
+  *         violations, such as accessing restricted memory regions or
+  *         executing invalid memory operations.
   */
 void MemManage_Handler(void)
 {

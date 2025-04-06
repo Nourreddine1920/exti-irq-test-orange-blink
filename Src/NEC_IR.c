@@ -10,8 +10,13 @@
 
 #include "NEC_IR.h"
 
-/* General System Init Function
- *
+/**
+ * @file NEC_IR.c
+ * @brief General System Initialization Functionality.
+ * This file contains the implementation of the general system
+ * initialization function for the project. It is responsible for
+ * setting up the necessary configurations and initializing the
+ * system components required for the application.
  */
 void NEC_Decoder_Init(void)
 {
