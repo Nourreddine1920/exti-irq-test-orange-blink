@@ -205,7 +205,7 @@ TEST_SRC = $(TEST_DIR)/test_nec_decoder.c
 TEST_OUT = $(TEST_DIR)/test_nec_decoder
 
 # Test includes
-TEST_INCLUDES = -I$(UNITY_DIR)/src -IInc -IDrivers/CMSIS/Include -IDrivers/CMSIS/Device/ST/STM32F4xx/Include
+TEST_INCLUDES = -I$(UNITY_DIR)/ -IInc -IDrivers/CMSIS/Include -IDrivers/CMSIS/Device/ST/STM32F4xx/Include
 
 test: $(TEST_OUT)
 	@mkdir -p test_results
